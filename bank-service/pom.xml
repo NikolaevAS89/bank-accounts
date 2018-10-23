@@ -16,6 +16,10 @@
             <groupId>ru.timestop.bank</groupId>
             <artifactId>bank-entities</artifactId>
         </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

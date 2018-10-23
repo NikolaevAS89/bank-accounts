@@ -1,24 +1,77 @@
 package ru.timestop.bank.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
+import ru.timestop.bank.dictionaries.AccountType;
+import ru.timestop.entrance.utilites.JsonUtil;
+
+import javax.persistence.*;
 
 /**
  * @author t.i.m.e.s.t.o.p
  * @version 1.0.0
  * @since 14.10.2018
  */
+@Entity
+@Table(name = "user_account")
+@NamedQueries({
+        @NamedQuery(name = "Account.id.get", query = "select a " +
+                " from account a " +
+                " where a.id = :id"),
+        @NamedQuery(name = "Account.all.get", query = "select a " +
+                " from account a " +
+                " where a.account = :id")})
 public class Account {
     @Id
     @Column
-    int id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private int id;
     @Column
-    int balanceAccount;
+    @Enumerated(EnumType.ORDINAL)
+    private AccountType type;
     @Column
-    int account;
+    private double amount;
     @Column
-    double amount;
+    private String description;
 
     public Account() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public AccountType getType() {
+        return type;
+    }
+
+    public void setType(AccountType type) {
+        this.type = type;
+    }
+
+    public String toString() {
+        try {
+            return JsonUtil.toJson(this);
+        } catch (Exception e) {
+            return "{id:" + id + ", description:\"" + description + "\"}";
+        }
     }
 }
