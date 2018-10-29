@@ -26,14 +26,6 @@ public class AccountsServlet extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Account> accounts = ProviderFactory.getAccountService().getAll();
         req.setAttribute("accounts", accounts);
-        this.getServletContext().getRequestDispatcher("").forward(req, resp);//TODO
-    }
-
-    @Override
-    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String description = req.getParameter("description");
-        int accountId = ProviderFactory.getAccountService().createAccount(description);
-        req.setAttribute("accountId", accountId);
-        this.getServletContext().getRequestDispatcher("").forward(req, resp);//TODO
+        this.getServletContext().getRequestDispatcher("/jsp/show_accounts.jsp").forward(req, resp);
     }
 }

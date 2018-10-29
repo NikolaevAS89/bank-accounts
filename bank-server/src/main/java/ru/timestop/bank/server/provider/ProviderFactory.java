@@ -14,14 +14,15 @@ import javax.persistence.Persistence;
 public class ProviderFactory {
     private static EntityManagerFactory entityManager;
 
-    private static final Logger LOG = Logger.getLogger(ProviderFactory.class.getName());
+    private static final Logger LOG = Logger.getLogger(ProviderFactory.class);
 
     static {
         try {
-            entityManager = Persistence.createEntityManagerFactory("store");
+            entityManager = Persistence.createEntityManagerFactory("bank");
             LOG.info("entityManager=" + entityManager);
         } catch (Exception e) {
             LOG.error(e);
+            e.printStackTrace();
         }
     }
 
@@ -29,18 +30,19 @@ public class ProviderFactory {
     }
 
     public static void close() {
+        LOG.warn("Close entity manager");
         entityManager.close();
     }
 
     public static AccountService getAccountService() {
-        return new AccountServiceImpl();
+        return new AccountServiceImpl(entityManager.createEntityManager());
     }
 
     public static CashboxService getCashboxService() {
-        return new CashboxServiceImpl();
+        return new CashboxServiceImpl(entityManager.createEntityManager());
     }
 
     public static DocumentService getDocumentService() {
-        return new DocumentServiceImpl();
+        return new DocumentServiceImpl(entityManager.createEntityManager());
     }
 }

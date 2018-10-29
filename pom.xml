@@ -11,8 +11,8 @@
     <modules>
         <module>bank-entities</module>
         <module>bank-service</module>
-        <module>utilites</module>
         <module>bank-server</module>
+        <module>utilites</module>
     </modules>
 
     <properties>
@@ -55,9 +55,29 @@
             </dependency>
 
             <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>jstl</artifactId>
+                <version>1.2</version>
+            </dependency>
+            <dependency>
                 <groupId>javax.persistence</groupId>
                 <artifactId>persistence-api</artifactId>
                 <version>1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-entitymanager</artifactId>
+                <version>4.0.1.Final</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-core</artifactId>
+                <version>4.0.1.Final</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hsqldb</groupId>
+                <artifactId>hsqldb</artifactId>
+                <version>2.3.1</version>
             </dependency>
 
             <dependency>

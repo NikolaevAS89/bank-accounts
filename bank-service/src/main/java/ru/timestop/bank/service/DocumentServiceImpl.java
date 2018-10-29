@@ -1,9 +1,11 @@
 package ru.timestop.bank.service;
 
 import org.apache.log4j.Logger;
+import ru.timestop.bank.dictionaries.AccountType;
 import ru.timestop.bank.entity.Account;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -16,26 +18,36 @@ public class DocumentServiceImpl implements DocumentService {
 
     private AtomicLong count = new AtomicLong(0);
 
-    private EntityManagerService entityManagerService;
+    private final EntityManager entityManager;
+
+    public DocumentServiceImpl(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 
     @Override
     public long createDocument(int debetId, int creditId, double value) {
-        if (value <= 0) {
+        if (value <= 0.00) {
             throw new RuntimeException("Value of document can't be negative");
         }
-        EntityManager entityManager = entityManagerService.getEntityManager();
+        if (debetId == creditId) {
+            throw new RuntimeException("Value of document can't be negative");
+        }
         entityManager.getTransaction().begin();
-        Account debet = entityManager.accountService.getUserAccount(debetId);
+
+        TypedQuery<Account> query = entityManager.createNamedQuery("Account.id.get", Account.class);
+        query.setParameter("id", debetId);
+        Account debet = query.getSingleResult();
         entityManager.persist(debet);
-        Account credit = accountService.getUserAccount(creditId);
+        query.setParameter("id", creditId);
+        Account credit = query.getSingleResult();
         entityManager.persist(credit);
-        double debet_value = debet.getAmount() + (debet.getType() == PassivAccount.TYPE_PASIV ? (-value) : (value));
-        if (debet_value < 0) {
+        double debet_value = debet.getAmount() + (debet.getType() == AccountType.PASSIVE ? (-value) : (value));
+        if (debet_value < 0.00) {
             entityManager.getTransaction().rollback();
             throw new RuntimeException("On " + debet.getId() + " account not enought money");
         }
-        double credit_value = credit.getAmount() + (credit.getType() == PassivAccount.TYPE_ACTIV ? (-value) : (value));
-        if (credit_value < 0) {
+        double credit_value = credit.getAmount() + (credit.getType() == AccountType.ACTIVE ? (-value) : (value));
+        if (credit_value < 0.00) {
             entityManager.getTransaction().rollback();
             throw new RuntimeException("On " + credit.getId() + " account not enought money");
         }

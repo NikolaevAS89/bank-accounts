@@ -10,25 +10,27 @@ import javax.persistence.*;
  * @version 1.0.0
  * @since 14.10.2018
  */
-@Entity
-@Table(name = "user_account")
+@Table
+@Entity(name = "account")
 @NamedQueries({
         @NamedQuery(name = "Account.id.get", query = "select a " +
-                " from account a " +
+                " from account as a " +
                 " where a.id = :id"),
         @NamedQuery(name = "Account.all.get", query = "select a " +
-                " from account a " +
-                " where a.account = :id")})
+                " from account as a")})
 public class Account {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
+
     @Column
     @Enumerated(EnumType.ORDINAL)
     private AccountType type;
+
     @Column
     private double amount;
+
     @Column
     private String description;
 

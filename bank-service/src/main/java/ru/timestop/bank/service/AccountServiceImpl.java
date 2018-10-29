@@ -20,6 +20,10 @@ public class AccountServiceImpl implements AccountService {
 
     private EntityManager entityManager; //TODO
 
+    public AccountServiceImpl(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
     @Override
     public int createAccount(String description) {
         Account newAccount = new Account();

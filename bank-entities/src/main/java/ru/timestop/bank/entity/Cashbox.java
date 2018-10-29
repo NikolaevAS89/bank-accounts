@@ -9,22 +9,21 @@ import javax.persistence.*;
  * @version 1.0.0
  * @since 23.10.2018
  */
-@Entity
-@Table(name = "cashbox")
+@Table
+@Entity(name = "cashbox")
 @NamedQueries({
         @NamedQuery(name = "Cashbox.all.get", query = "select c from cashbox c "),
         @NamedQuery(name = "Cashbox.id.get", query = "select c from cashbox c where c.id = :id")})
 public class Cashbox {
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
 
     @Column(name = "description")
     private String description;
 
-    @Column(name = "account_id")
-    @OneToOne(mappedBy = "id")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
     public Cashbox() {

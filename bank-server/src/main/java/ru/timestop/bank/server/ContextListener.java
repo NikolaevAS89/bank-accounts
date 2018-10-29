@@ -2,6 +2,7 @@ package ru.timestop.bank.server;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import ru.timestop.bank.server.provider.ProviderFactory;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -19,12 +20,8 @@ public class ContextListener implements ServletContextListener {
 
     private final static Logger LOG = Logger.getLogger(ContextListener.class);
 
-    /**
-     * Initialize log4j when the application is being started
-     */
     @Override
     public void contextInitialized(ServletContextEvent event) {
-        // initialize log4j here
         ServletContext context = event.getServletContext();
         String log4jConfigFile = context.getInitParameter("log4j-config-location");
         String fullPath = context.getRealPath("") + File.separator + log4jConfigFile;
@@ -32,7 +29,7 @@ public class ContextListener implements ServletContextListener {
         PropertyConfigurator.configure(fullPath);
 
         try {
-            Class.forName(EntityManagerService.class.getName());
+            Class.forName(ProviderFactory.class.getName());
         } catch (ClassNotFoundException e) {
             LOG.error(e);
             throw new RuntimeException(e);
@@ -41,6 +38,6 @@ public class ContextListener implements ServletContextListener {
 
     @Override
     public void contextDestroyed(ServletContextEvent event) {
-        //TODO EntityManagerService.close();
+        ProviderFactory.close();
     }
 }

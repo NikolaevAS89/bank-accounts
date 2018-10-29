@@ -1,0 +1,70 @@
+table {
+  border-collapse: collapse;
+}
+th {
+  background: #DDD
+}
+tr, th, td {
+  padding: 0;
+  margin: 0;
+  border-collaple: collapse;
+  border: 1px solid #333;
+  transition: 0.3s linear;
+}
+#errorbox{
+  position: absolute;
+  top:0;
+  padding: 0;
+  margin: 0;
+  height: 30px;
+  min-width: 100%;
+  weight: 100%;
+  background-color: red;
+}
+.bttn {
+  width: 150px;
+  text-align: left;
+  border: 1px solid #EEE;
+  background-color: inherit;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  display: inline-block;
+}
+.whitespace {
+  width: 100%;
+}
+.line {
+  display: flex;
+}
+.box {
+  margin-left: 5%;
+  margin-right: 5%;
+}
+.in_cell {  
+  width: 100%;
+  min-height: 100%;
+  border: 1px solid #999;
+}
+.credit {
+  color: green;
+}
+.swap {
+  width: 25px
+}
+.debet {
+    color: blue;
+}
+.account {
+  width: 200px
+}
+.summa {
+  width: 100px;
+}
+.description{
+  width: 400px;
+}
+button:hover {
+    background: #DEF;
+    color: #000;
+}
