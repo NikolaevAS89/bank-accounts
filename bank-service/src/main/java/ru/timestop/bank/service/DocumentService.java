@@ -6,5 +6,13 @@ package ru.timestop.bank.service;
  * @since 14.10.2018
  */
 public interface DocumentService {
+    /**
+     * create payment order
+     *
+     * @param debetId  account
+     * @param creditId account
+     * @param value
+     * @return payment number
+     */
     long createDocument(int debetId, int creditId, double value);
 }

@@ -11,7 +11,16 @@ import java.util.List;
  */
 public interface AccountService {
 
+    /**
+     * create new account with signed description
+     *
+     * @param description
+     * @return id of new account
+     */
     int createAccount(String description);
 
+    /**
+     * @return all accounts
+     */
     List<Account> getAll();
 }
