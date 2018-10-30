@@ -3,6 +3,7 @@ package ru.timestop.bank.service;
 import org.apache.log4j.Logger;
 import ru.timestop.bank.dictionaries.AccountType;
 import ru.timestop.bank.entity.Account;
+import ru.timestop.bank.exception.ServerWarningsException;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
@@ -18,7 +19,7 @@ public class AccountServiceImpl implements AccountService {
 
     private final static Logger LOG = Logger.getLogger(AccountServiceImpl.class);
 
-    private EntityManager entityManager; //TODO
+    private EntityManager entityManager;
 
     public AccountServiceImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
@@ -36,15 +37,15 @@ public class AccountServiceImpl implements AccountService {
             entityManager.flush();
             entityManager.getTransaction().commit();
         } catch (EntityExistsException e) {
-            LOG.warn(e);
             entityManager.getTransaction().rollback();
+            throw new ServerWarningsException(e);
         } catch (Throwable e) {
-            LOG.error(e);
             try {
                 entityManager.getTransaction().rollback();
             } catch (Throwable skip) {
                 //SKIP
             }
+            throw e;
         }
         return newAccount.getId();
     }

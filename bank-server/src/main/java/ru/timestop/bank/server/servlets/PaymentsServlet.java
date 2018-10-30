@@ -22,25 +22,27 @@ public class PaymentsServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("GET[/public/v1/bank/payments]");
+        }
         this.getServletContext().getRequestDispatcher("/jsp/create_payment.jsp").forward(req, resp);
     }
 
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("POST[/public/v1/bank/payments] ");
+        }
         int debetId = Integer.parseInt(req.getParameter("debetId"));
         int creditId = Integer.parseInt(req.getParameter("creditId"));
         double summa = Double.parseDouble(req.getParameter("summa"));
-        try {
-            LOG.info("___________________________________");
-            LOG.info("debetId=" + debetId + " creditId=" + creditId + " summa=" + summa);
-            LOG.info("___________________________________");
-            long paymentId = ProviderFactory.getDocumentService().createDocument(debetId, creditId, summa);
-            req.setAttribute("paymentId", paymentId);
-            LOG.error("New payment is " + paymentId);
-            PrintWriter out = resp.getWriter();
-            out.print("New payment (" + paymentId + ") was created");
-        } catch (Throwable e) {
-            e.printStackTrace();
+        LOG.info("debetId=" + debetId + " creditId=" + creditId + " summa=" + summa);
+        long paymentId = ProviderFactory.getDocumentService().createDocument(debetId, creditId, summa);
+        req.setAttribute("paymentId", paymentId);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("New payment was created " + paymentId);
         }
+        PrintWriter out = resp.getWriter();
+        out.print("New payment (" + paymentId + ") was created");
     }
 }

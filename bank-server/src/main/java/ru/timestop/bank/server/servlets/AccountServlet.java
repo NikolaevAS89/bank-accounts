@@ -19,18 +19,23 @@ import java.io.PrintWriter;
 @WebServlet(urlPatterns = {"/public/v1/bank/account"})
 public class AccountServlet extends HttpServlet {
 
-    private static final Logger LOG = Logger.getLogger(AccountsServlet.class);
+    private static final Logger LOG = Logger.getLogger(AccountServlet.class);
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if(LOG.isDebugEnabled()){
+            LOG.debug("GET[/public/v1/bank/account]");
+        }
         this.getServletContext().getRequestDispatcher("/jsp/create_account.jsp").forward(req, resp);
     }
 
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if(LOG.isDebugEnabled()){
+            LOG.debug("POST[/public/v1/bank/account]");
+        }
         String description = req.getParameter("description");
         int accountId = ProviderFactory.getAccountService().createAccount(description);
-        LOG.error("New account is " + accountId);
         PrintWriter out = resp.getWriter();
         out.print("New account (" + accountId + ") was created");
     }

@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import ru.timestop.bank.dictionaries.AccountType;
 import ru.timestop.bank.entity.Account;
 import ru.timestop.bank.entity.Cashbox;
+import ru.timestop.bank.exception.ServerWarningsException;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
@@ -26,11 +27,11 @@ public class CashboxServiceImpl implements CashboxService {
 
     @Override
     public int createCashbox(String description) {
-        Cashbox newCashbox = new Cashbox();
         Account newAccount = new Account();
         newAccount.setAmount(0.0);
-        newAccount.setDescription(description);
+        newAccount.setDescription("Account for cashbox [" + description + "]");
         newAccount.setType(AccountType.ACTIVE);
+        Cashbox newCashbox = new Cashbox();
         newCashbox.setAccount(newAccount);
         newCashbox.setDescription(description);
         try {
@@ -42,6 +43,7 @@ public class CashboxServiceImpl implements CashboxService {
         } catch (EntityExistsException e) {
             LOG.warn(e);
             entityManager.getTransaction().rollback();
+            throw new ServerWarningsException(e);
         } catch (Throwable e) {
             LOG.error(e);
             try {
@@ -49,6 +51,7 @@ public class CashboxServiceImpl implements CashboxService {
             } catch (Throwable skip) {
                 //SKIP
             }
+            throw e;
         }
         return newCashbox.getId();
     }

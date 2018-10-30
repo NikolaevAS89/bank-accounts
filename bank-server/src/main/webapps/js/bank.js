@@ -1,6 +1,14 @@
 var choosedElement = null;
 var choosedElementColor = null;
 
+
+function resetAction() {
+    if (choosedElement != null) {
+        choosedElement.style.backgroundColor = choosedElementColor;
+        choosedElement = null;
+    }
+}
+
 function swapAccount() {
     resetAction();
     debetField = document.getElementById("debetId");
@@ -23,23 +31,6 @@ function changeAccount(id) {
     choosedElement = document.getElementById(id);
     choosedElementColor = choosedElement.style.backgroundColor;
     choosedElement.style.backgroundColor = "#F22";
-}
-
-function create_new(description, path) {
-    try {
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                showError(this.responseText);
-            }
-        };
-        xhttp.open("POST", path, true);
-        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhttp.send("description=" + description);
-        load("south", "/public/v1/bank/accounts");
-    } catch (err) {
-        showError(err.toString());
-    }
 }
 
 function createNewAccount() {
@@ -94,30 +85,20 @@ function newDocument() {
     try {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                showError(this.responseText);
+            if (this.readyState == 4) {
+                if (this.status == 200) {
+                    showInfo(this.responseText);
+                    load("south", "/public/v1/bank/accounts");
+                } else if (this.status >= 400) {
+                    showError(this.responseText);
+                }
             }
         };
         xhttp.open("POST", "/public/v1/bank/payments", true);
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhttp.send("debetId=" + debetId+"&creditId="+creditId+"&summa="+summa);
+        xhttp.send("debetId=" + debetId + "&creditId=" + creditId + "&summa=" + summa);
         load("south", "/public/v1/bank/accounts");
     } catch (err) {
         showError(err.toString());
-    }
-}
-
-function showError(errMsg) {
-    elError = document.getElementById("errorbox");
-    elError.innerHTML = errMsg;
-    elError.hidden = false;
-}
-
-function resetAction() {
-    elError = document.getElementById("errorbox");
-    elError.hidden = true;
-    if (choosedElement != null) {
-        choosedElement.style.backgroundColor = choosedElementColor;
-        choosedElement = null;
     }
 }

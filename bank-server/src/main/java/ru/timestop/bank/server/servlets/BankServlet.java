@@ -1,5 +1,7 @@
 package ru.timestop.bank.server.servlets;
 
+import org.apache.log4j.Logger;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,10 +16,14 @@ import java.io.IOException;
  */
 @WebServlet(urlPatterns = {"/public/v1/bank"})
 public class BankServlet extends HttpServlet {
+    private static final Logger LOG = Logger.getLogger(BankServlet.class);
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        if(LOG.isDebugEnabled()){
+            LOG.debug("GET[/public/v1/bank]");
+        }
         this.getServletContext().getRequestDispatcher("/jsp/main.jsp").forward(req, resp);
     }
 

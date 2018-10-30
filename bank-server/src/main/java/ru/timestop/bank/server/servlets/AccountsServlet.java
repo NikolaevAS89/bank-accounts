@@ -24,6 +24,9 @@ public class AccountsServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if(LOG.isDebugEnabled()){
+            LOG.debug("GET[/public/v1/bank/accounts]");
+        }
         List<Account> accounts = ProviderFactory.getAccountService().getAll();
         req.setAttribute("accounts", accounts);
         this.getServletContext().getRequestDispatcher("/jsp/show_accounts.jsp").forward(req, resp);

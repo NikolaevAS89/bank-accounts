@@ -11,4 +11,8 @@
     <welcome-file-list>
         <welcome-file>/public/v1/bank</welcome-file>
     </welcome-file-list>
+    <error-page>
+        <exception-type>java.lang.Throwable</exception-type >
+        <location>/public/v1/bank/error</location>
+    </error-page>
 </web-app>
