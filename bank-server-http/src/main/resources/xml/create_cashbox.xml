@@ -1,0 +1,8 @@
+<div class="box">
+    <h1>Создать кассу</h1>
+    <div class="line">
+        <input id="newCashboxDescription" class="description" placeholder="Описание для новой кассы"/>
+        <button class="bttn create" onclick="addNewCashbox()">Создать</button>
+        <span class="whitespace"></span>
+    </div>
+</div>

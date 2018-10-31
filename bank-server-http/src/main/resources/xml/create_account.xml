@@ -1,0 +1,8 @@
+<div class="box">
+    <h1>Создать счет</h1>
+    <div class="line">
+        <input id="newAccountDescription" class="description" placeholder="Описание для нового счета"/>
+        <button class="bttn create" onclick="createNewAccount()">Создать</button>
+        <span class="whitespace"></span>
+    </div>
+</div>
