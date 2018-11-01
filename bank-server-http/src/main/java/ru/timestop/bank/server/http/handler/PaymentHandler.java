@@ -1,6 +1,5 @@
 package ru.timestop.bank.server.http.handler;
 
-
 import com.sun.net.httpserver.HttpExchange;
 import org.apache.log4j.Logger;
 import ru.timestop.bank.server.provider.ProviderFactory;
@@ -10,30 +9,29 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Map;
 
-
 /**
- * @author t.i.m.e.s.t.o.p
- * @version 1.0.0
- * @since 31.10.2018
+ * Created by nikolaev13-as on 01.11.2018.
  */
-public class AccountHandler extends ResourceHandler {
-    private static final Logger LOG = Logger.getLogger(AccountHandler.class);
+public class PaymentHandler extends ResourceHandler {
+    private static final Logger LOG = Logger.getLogger(PaymentHandler.class);
 
-    public AccountHandler() throws IOException {
-        super("xml/create_account.xml");
+    public PaymentHandler() throws IOException {
+        super("xml/create_payment.xml");
     }
 
     public void handle(HttpExchange httpExchange) throws IOException {
         switch (httpExchange.getRequestMethod()) {
             case "POST":
                 httpExchange.sendResponseHeaders(200, 0);
+
                 Map<String, String> params = HtmlUtil.parseParams(HtmlUtil.read(httpExchange.getRequestBody(), 128));
-                int accountId = ProviderFactory.getAccountService().createAccount(params.get("description"));
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("new account was created. New accounts id is " + accountId);
-                }
+                int debetId = Integer.parseInt(params.get("debetId"));
+                int creditId = Integer.parseInt(params.get("creditId"));
+                double summa = Double.parseDouble(params.get("summa"));
+                LOG.info("debetId=" + debetId + " creditId=" + creditId + " summa=" + summa);
+                long paymentId = ProviderFactory.getDocumentService().createDocument(debetId, creditId, summa);
                 OutputStream os = httpExchange.getResponseBody();
-                os.write(("New account (" + accountId + ") was created").getBytes());
+                os.write(("New payment (" + paymentId + ") was created").getBytes());
                 os.flush();
                 os.close();
                 break;

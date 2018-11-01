@@ -16,5 +16,29 @@
             <groupId>ru.timestop.bank</groupId>
             <artifactId>utilites</artifactId>
         </dependency>
+        <dependency>
+            <groupId>ru.timestop.bank</groupId>
+            <artifactId>bank-service</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ru.timestop.bank</groupId>
+            <artifactId>bank-server</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>persistence-api</artifactId>
+        </dependency>
     </dependencies>
 </project>

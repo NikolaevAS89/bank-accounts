@@ -15,7 +15,7 @@
         <c:if test="${not empty requestScope.accounts}">
             <c:forEach var="account" items="${requestScope.accounts}" >
                 <tr>
-                    <td><button class="bttn in_cell" onclick="chooseAccount('${account.id}')">${account.id}</button></td>
+                    <td><button class="bttn in_cell" onclick="chooseAccount(this)">${account.id}</button></td>
                     <td>${account.type.name()}</td>
                     <td><fmt:formatNumber pattern="#######0.00" type="number" value="${account.amount}"/></td>
                     <td>${account.description}</td>

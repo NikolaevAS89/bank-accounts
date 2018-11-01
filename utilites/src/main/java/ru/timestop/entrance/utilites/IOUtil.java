@@ -20,6 +20,21 @@ public class IOUtil {
         out.close();
     }
 
+    public static void redirectStream(InputStream is, OutputStream os, int bufferSize) throws IOException {
+        try {
+            byte[] buff = new byte[bufferSize];
+            int readed = 0;
+            do {
+                os.write(buff, 0, readed);
+                readed = is.read(buff);
+                os.flush();
+            } while (readed > 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
     public static void closeQuiet(Closeable io) {
         try {
             io.close();

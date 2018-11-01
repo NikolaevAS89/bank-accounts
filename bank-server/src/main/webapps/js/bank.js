@@ -19,9 +19,9 @@ function swapAccount() {
     creditField.innerHTML = debetId;
 }
 
-function chooseAccount(id) {
+function chooseAccount(elem) {
     if (choosedElement != null) {
-        choosedElement.innerHTML = id;
+        choosedElement.innerHTML = elem.innerText;
     }
     resetAction();
 }

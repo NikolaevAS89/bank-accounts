@@ -1,11 +1,17 @@
 package ru.timestop.bank.server.http;
 
 import com.sun.net.httpserver.HttpContext;
+import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
-import ru.timestop.bank.server.http.handler.MainHandler;
+import org.apache.log4j.Logger;
+import ru.timestop.bank.server.http.handler.*;
+import ru.timestop.bank.server.provider.ProviderFactory;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
@@ -13,24 +19,52 @@ import java.util.concurrent.Executors;
  */
 public class ServerHttp {
 
+    private static final Logger LOG = Logger.getLogger(ServerHttp.class);
 
-    public static void main(String[] args) throws IOException {
-        HttpServer server = null;
+    private final static Map<String, HttpHandler> RESOURCES;
+    ExecutorService executorService = Executors.newCachedThreadPool();
+
+    static {
+        //ProviderFactory
+        RESOURCES = new HashMap<>();
         try {
-            server = HttpServer.create();
-            server.bind(new InetSocketAddress(8080), 0);
+            Class.forName(ProviderFactory.class.getName());
 
-            HttpContext context = server.createContext("/public/v1/bank", new MainHandler());
-            context.setAuthenticator(null);
-            server.setExecutor(Executors.newCachedThreadPool());
+            RESOURCES.put("/css/bank.css", new ResourceHandler("css/bank.css"));
+            RESOURCES.put("/js/bank.js", new ResourceHandler("js/bank.js"));
+            RESOURCES.put("/js/main.js", new ResourceHandler("js/main.js"));
+            RESOURCES.put("/xsl/show_accounts.xsl", new ResourceHandler("xsl/show_accounts.xsl"));
+            RESOURCES.put("/public/v1/bank", new ResourceHandler("main.html"));
+            RESOURCES.put("/public/v1/bank/account", new AccountHandler());
+            RESOURCES.put("/public/v1/bank/cashbox", new CashboxHandler());
+            RESOURCES.put("/public/v1/bank/payment", new PaymentHandler());
+            RESOURCES.put("/public/v1/bank/accounts", new AccountsHandler());
+        } catch (Exception e) {
+            LOG.error(e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void start() {
+        try {
+            HttpServer server = HttpServer.create();
+            server.bind(new InetSocketAddress(8080), 100);
+            for (String path : RESOURCES.keySet()) {
+                HttpContext context = server.createContext(path, RESOURCES.get(path));
+                context.setAuthenticator(null);
+                server.setExecutor(executorService);
+            }
             server.start();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (server != null) {
-                server.stop(1000);
-            }
+        }
+    }
 
+    public static void main(String[] args) {
+        try {
+            new ServerHttp().start();
+        } catch (Throwable e) {
+            e.printStackTrace();
         }
     }
 }
