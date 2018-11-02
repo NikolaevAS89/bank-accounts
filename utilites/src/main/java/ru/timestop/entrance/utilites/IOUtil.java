@@ -11,13 +11,7 @@ import java.net.HttpURLConnection;
 public class IOUtil {
 
     public static void copy(InputStream is, OutputStream out) throws IOException {
-        byte[] buff = new byte[255];
-        int readed = 0;
-        while ((readed = is.read(buff)) > 0) {
-            out.write(buff, 0, readed);
-        }
-        out.flush();
-        out.close();
+        redirectStream(is, out, 256);
     }
 
     public static void redirectStream(InputStream is, OutputStream os, int bufferSize) throws IOException {

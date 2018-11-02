@@ -65,7 +65,7 @@ public class AccountsHandler implements HttpHandler {
             os.close();
             if (LOG.isDebugEnabled()) {
                 elapse = System.currentTimeMillis() - elapse;
-                LOG.debug("account handle. elapse : " + elapse);
+                LOG.debug("accounts handle. elapse : " + elapse);
             }
         } catch (Throwable e) {
             httpExchange.sendResponseHeaders(500, 0);

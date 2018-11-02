@@ -41,7 +41,7 @@ public class PaymentHandler extends ResourceHandler {
             }
             if (LOG.isDebugEnabled()) {
                 elapse = System.currentTimeMillis() - elapse;
-                LOG.debug("account handle. elapse : " + elapse);
+                LOG.debug("payment handle. elapse : " + elapse);
             }
         } catch (Throwable e) {
             httpExchange.sendResponseHeaders(500, 0);

@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -22,12 +23,17 @@ public class ServerHttp {
     private static final Logger LOG = Logger.getLogger(ServerHttp.class);
 
     private final static Map<String, HttpHandler> RESOURCES;
+    private final static Properties PROPERTIES;
     private final ExecutorService executorService = Executors.newCachedThreadPool();
 
     static {
         //ProviderFactory
         RESOURCES = new HashMap<>();
         try {
+            PROPERTIES = new Properties();
+            PROPERTIES.load(ServerHttp.class.getClassLoader().getResourceAsStream("application.properties"));
+
+
             Class.forName(ProviderFactory.class.getName());
 
             RESOURCES.put("/css/bank.css", new ResourceHandler("css/bank.css"));
@@ -49,7 +55,9 @@ public class ServerHttp {
         try {
             long elapse = System.currentTimeMillis();
             HttpServer server = HttpServer.create();
-            server.bind(new InetSocketAddress(8080), 100);
+            int port = Integer.parseInt(PROPERTIES.getProperty("port"));
+            int connectionCnt = Integer.parseInt(PROPERTIES.getProperty("connection.count"));
+            server.bind(new InetSocketAddress(port), connectionCnt);
             for (String path : RESOURCES.keySet()) {
                 HttpContext context = server.createContext(path, RESOURCES.get(path));
                 context.setAuthenticator(null);

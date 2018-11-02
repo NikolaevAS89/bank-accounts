@@ -41,7 +41,7 @@ public class ResourceHandler implements HttpHandler {
             os.close();
             if (LOG.isDebugEnabled()) {
                 elapse = System.currentTimeMillis() - elapse;
-                LOG.debug("account handle. elapse : " + elapse);
+                LOG.debug("resource (" + fileName + ") handle. elapse : " + elapse);
             }
         } catch (Throwable e) {
             httpExchange.sendResponseHeaders(500, 0);
