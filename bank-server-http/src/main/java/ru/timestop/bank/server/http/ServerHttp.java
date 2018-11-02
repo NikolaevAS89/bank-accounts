@@ -4,8 +4,8 @@ import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import org.apache.log4j.Logger;
+import ru.timestop.bank.provider.ProviderFactory;
 import ru.timestop.bank.server.http.handler.*;
-import ru.timestop.bank.server.provider.ProviderFactory;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -22,7 +22,7 @@ public class ServerHttp {
     private static final Logger LOG = Logger.getLogger(ServerHttp.class);
 
     private final static Map<String, HttpHandler> RESOURCES;
-    ExecutorService executorService = Executors.newCachedThreadPool();
+    private final ExecutorService executorService = Executors.newCachedThreadPool();
 
     static {
         //ProviderFactory
@@ -47,6 +47,7 @@ public class ServerHttp {
 
     public void start() {
         try {
+            long elapse = System.currentTimeMillis();
             HttpServer server = HttpServer.create();
             server.bind(new InetSocketAddress(8080), 100);
             for (String path : RESOURCES.keySet()) {
@@ -54,9 +55,13 @@ public class ServerHttp {
                 context.setAuthenticator(null);
                 server.setExecutor(executorService);
             }
+            if (LOG.isDebugEnabled()) {
+                elapse = System.currentTimeMillis() - elapse;
+                LOG.debug("account handle. elapse : " + elapse);
+            }
             server.start();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error(e.getMessage());
         }
     }
 
@@ -64,7 +69,7 @@ public class ServerHttp {
         try {
             new ServerHttp().start();
         } catch (Throwable e) {
-            e.printStackTrace();
+            LOG.error(e.getMessage());
         }
     }
 }

@@ -27,6 +27,7 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public long createDocument(int debetId, int creditId, double value) {
+        long elapse = System.currentTimeMillis();
         if (value <= 0.00) {
             throw new ServerWarningsException("Value of document can't be negative");
         }
@@ -56,6 +57,11 @@ public class DocumentServiceImpl implements DocumentService {
         credit.setAmount(credit_value);
         entityManager.flush();
         entityManager.getTransaction().commit();
+
+        if (LOG.isDebugEnabled()) {
+            elapse = System.currentTimeMillis() - elapse;
+            LOG.debug("get all accounts. elapse : " + elapse);
+        }
         return count.incrementAndGet();
     }
 }

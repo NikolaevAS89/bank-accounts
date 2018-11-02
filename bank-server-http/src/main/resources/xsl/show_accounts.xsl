@@ -23,7 +23,7 @@
                                 <xsl:value-of select="type"/>
                             </td>
                             <td>
-                                <xsl:value-of select="amount"/>
+                                <xsl:value-of select='format-number(amount, "#0.00")'/>
                             </td>
                             <td>
                                 <xsl:value-of select="description"/>

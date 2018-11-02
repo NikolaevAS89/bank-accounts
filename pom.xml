@@ -12,8 +12,8 @@
         <module>bank-entities</module>
         <module>bank-service</module>
         <module>bank-server</module>
-        <module>utilites</module>
         <module>bank-server-http</module>
+        <module>utilites</module>
     </modules>
 
     <properties>

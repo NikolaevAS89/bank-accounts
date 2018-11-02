@@ -27,6 +27,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public int createAccount(String description) {
+        long elapse = System.currentTimeMillis();
         Account newAccount = new Account();
         newAccount.setAmount(0.0);
         newAccount.setDescription(description);
@@ -47,12 +48,21 @@ public class AccountServiceImpl implements AccountService {
             }
             throw e;
         }
+        if (LOG.isDebugEnabled()) {
+            elapse = System.currentTimeMillis() - elapse;
+            LOG.debug("create new account. elapse : " + elapse);
+        }
         return newAccount.getId();
     }
 
     @Override
     public List<Account> getAll() {
+        long elapse = System.currentTimeMillis();
         TypedQuery<Account> query = entityManager.createNamedQuery("Account.all.get", Account.class);
+        if (LOG.isDebugEnabled()) {
+            elapse = System.currentTimeMillis() - elapse;
+            LOG.debug("get all accounts. elapse : " + elapse);
+        }
         return query.getResultList();
     }
 }

@@ -1,4 +1,4 @@
-package ru.timestop.bank.server.provider;
+package ru.timestop.bank.provider;
 
 import org.apache.log4j.Logger;
 import ru.timestop.bank.service.*;
@@ -18,11 +18,11 @@ public class ProviderFactory {
 
     static {
         try {
+            LOG.info("initialize EntityManagerFactory");
             entityManager = Persistence.createEntityManagerFactory("bank");
-            LOG.info("entityManager=" + entityManager);
         } catch (Exception e) {
             LOG.error(e);
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -35,14 +35,23 @@ public class ProviderFactory {
     }
 
     public static AccountService getAccountService() {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("get AccountService");
+        }
         return new AccountServiceImpl(entityManager.createEntityManager());
     }
 
     public static CashboxService getCashboxService() {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("get CashboxService");
+        }
         return new CashboxServiceImpl(entityManager.createEntityManager());
     }
 
     public static DocumentService getDocumentService() {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("get DocumentService");
+        }
         return new DocumentServiceImpl(entityManager.createEntityManager());
     }
 }

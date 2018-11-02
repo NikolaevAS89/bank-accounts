@@ -2,7 +2,7 @@ package ru.timestop.bank.server;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-import ru.timestop.bank.server.provider.ProviderFactory;
+import ru.timestop.bank.provider.ProviderFactory;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;

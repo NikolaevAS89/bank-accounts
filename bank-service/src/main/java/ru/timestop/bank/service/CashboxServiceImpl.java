@@ -27,6 +27,7 @@ public class CashboxServiceImpl implements CashboxService {
 
     @Override
     public int createCashbox(String description) {
+        long elapse = System.currentTimeMillis();
         Account newAccount = new Account();
         newAccount.setAmount(0.0);
         newAccount.setDescription("Account for cashbox [" + description + "]");
@@ -52,6 +53,10 @@ public class CashboxServiceImpl implements CashboxService {
                 //SKIP
             }
             throw e;
+        }
+        if (LOG.isDebugEnabled()) {
+            elapse = System.currentTimeMillis() - elapse;
+            LOG.debug("get all accounts. elapse : " + elapse);
         }
         return newCashbox.getId();
     }

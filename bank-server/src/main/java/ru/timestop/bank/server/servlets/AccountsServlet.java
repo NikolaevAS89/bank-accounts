@@ -2,7 +2,7 @@ package ru.timestop.bank.server.servlets;
 
 import org.apache.log4j.Logger;
 import ru.timestop.bank.entity.Account;
-import ru.timestop.bank.server.provider.ProviderFactory;
+import ru.timestop.bank.provider.ProviderFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
