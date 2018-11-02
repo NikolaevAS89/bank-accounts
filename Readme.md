@@ -16,3 +16,7 @@ Implicit requirements:
 1. the code produced by you is expected to be of high quality.
 1. there are no detailed requirements, use common sense.
 Please put your work on github or bitbucket.
+
+# Objects
+
+![Objects](./uml/objects.png)
